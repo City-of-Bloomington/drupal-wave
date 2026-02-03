@@ -1,0 +1,50 @@
+{#
+ * @copyright 2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array  reports   result rows
+ * @param array  search    search parameters
+ * @param int    total
+ * @param int    itemsPerPage
+ * @param int    currentPage
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/pagination.twig" as pagination %}
+{% import  "html/macros/forms.twig"      as forms      %}
+{% block content %}
+<section>
+    <header><h1>Reports</h1></header>
+
+    <form class="usa-form">
+        <fieldset class="usa-fieldset">
+            <legend class="usa-legend">Reports</legend>
+        </fieldset>
+    </form>
+
+    <table>
+    <thead>
+        <tr><th>nid</th>
+            <th>path</th>
+            <th>created</th>
+            <th>error</th>
+            <th>contrast</th>
+            <th>alert</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in reports %}
+        <tr><td>{{ r.nid }}</td>
+            <td>{{ r.path }}</td>
+            <td>{{ r.created }}</td>
+            <td>{{ r.error }}</td>
+            <td>{{ r.contrast }}</td>
+            <td>{{ r.alert }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+    {% if total > itemsPerPage %}
+        {{ pagination.pageLinks(REQUEST.uri.path, search, total, itemsPerPage, currentPage) }}
+    {% endif %}
+</section>
+{% endblock %}

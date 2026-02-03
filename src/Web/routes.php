@@ -9,5 +9,5 @@ $ROUTES = new \Aura\Router\RouterContainer(BASE_URI);
 $map    = $ROUTES->getMap();
 
 $map->attach('home.', '/', function ($r) {
-    $r->get ('index', '', Web\HomeController::class);
+    $r->get ('index', '', Web\Reports\List\Controller::class);
 });

@@ -1,0 +1,14 @@
+<?php
+/**
+ * @copyright 2026 City of Bloomington, Indiana
+ * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ */
+declare (strict_types=1);
+namespace Application\Reports;
+
+use Application\PdoRepository;
+
+class ReportsRepository extends PdoRepository
+{
+    public function __construct() { parent::__construct('reports'); }
+}
