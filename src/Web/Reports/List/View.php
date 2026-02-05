@@ -6,6 +6,8 @@
 declare (strict_types=1);
 namespace Web\Reports\List;
 
+use Web\Ldap;
+
 class View extends \Web\View
 {
     public function __construct(array $reports, array $search, int $total, int $itemsPerPage, int $currentPage)
@@ -17,12 +19,21 @@ class View extends \Web\View
             'search'      => $search,
             'total'       => $total,
             'itemsPerPage'=> $itemsPerPage,
-            'currentPage' => $currentPage
+            'currentPage' => $currentPage,
+            'DRUPAL_SITE' => DRUPAL_SITE,
+            'departments' => self::departments()
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/reports/list.twig', $this->vars);
+    }
+
+    private static function departments(): array
+    {
+        $opts = [ ['value'=>''],['value'=>'UNKNOWN'] ];
+        foreach (Ldap::$departments as $d=>$ou) { $opts[] = ['value'=>$d]; }
+        return $opts;
     }
 }

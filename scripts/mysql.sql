@@ -8,3 +8,9 @@ create table reports (
     alert    tinyint unsigned,
     report   json
 );
+
+create table users (
+    id         int unsigned not null primary key,
+    username   varchar(32)  not null unique,
+    department varchar(32)
+);

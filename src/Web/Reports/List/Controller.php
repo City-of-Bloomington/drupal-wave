@@ -15,7 +15,7 @@ class Controller extends \Web\Controller
         $repo   = new ReportsRepository();
         $page   = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
         $search = self::prepareSearch();
-        $list   = $repo->find($search, 'created desc', parent::ITEMS_PER_PAGE, $page);
+        $list   = $repo->search($search, null, parent::ITEMS_PER_PAGE, $page);
 
         return new View($list['rows'] ?? [],
                         $search,
@@ -27,7 +27,12 @@ class Controller extends \Web\Controller
     private static function prepareSearch(): array
     {
         $s = [];
-
+        $fields = ['path', 'department'];
+        foreach ($fields as $f) {
+            if ( !empty( $_GET[$f] )) {
+                $s[$f] = $_GET[$f];
+            }
+        }
         return $s;
     }
 }

@@ -6,6 +6,8 @@
  * @param int    total
  * @param int    itemsPerPage
  * @param int    currentPage
+ * @param string DRUPAL_SITE
+ * @param array  departments   Drop down list of departments
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/pagination.twig" as pagination %}
@@ -17,27 +19,30 @@
     <form class="usa-form">
         <fieldset class="usa-fieldset">
             <legend class="usa-legend">Reports</legend>
+            {{ forms.field_text  ('path',       'path',       'Path',       search.path       ?? '' ) }}
+            {{ forms.field_select('department', 'department', 'Department', search.department ?? '', departments, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.button('submit', 'Search', 'search') }}
         </fieldset>
     </form>
 
     <table>
     <thead>
-        <tr><th>nid</th>
-            <th>path</th>
-            <th>created</th>
-            <th>error</th>
-            <th>contrast</th>
-            <th>alert</th>
+        <tr><th>Page</th>
+            <th>Errors</th>
+            <th>Contrast</th>
+            <th>User</th>
+            <th>Department</th>
+            <th>Scanned</th>
         </tr>
     </thead>
     <tbody>
         {% for r in reports %}
-        <tr><td>{{ r.nid }}</td>
-            <td>{{ r.path }}</td>
-            <td>{{ r.created }}</td>
-            <td>{{ r.error }}</td>
-            <td>{{ r.contrast }}</td>
-            <td>{{ r.alert }}</td>
+        <tr><td><a href="{{ DRUPAL_SITE }}{{ r.path }}">{{ r.path }}</a></td>
+            <td>{{ r.error    ? r.error    : '' }}</td>
+            <td>{{ r.contrast ? r.contrast : '' }}</td>
+            <td>{{ r.user }}</td>
+            <td>{{ r.department }}</td>
+            <td>{{ r.created | date('n/j/Y') }}</td>
         </tr>
         {% endfor %}
     </tbody>
