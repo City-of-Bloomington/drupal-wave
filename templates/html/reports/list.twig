@@ -20,6 +20,7 @@
         <fieldset class="usa-fieldset">
             <legend class="usa-legend">Reports</legend>
             {{ forms.field_text  ('path',       'path',       'Path',       search.path       ?? '' ) }}
+            {{ forms.field_text  ('username',   'username',   'Username',   search.username   ?? '' ) }}
             {{ forms.field_select('department', 'department', 'Department', search.department ?? '', departments, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.button('submit', 'Search', 'search') }}
         </fieldset>
@@ -40,7 +41,7 @@
         <tr><td><a href="{{ DRUPAL_SITE }}{{ r.path }}">{{ r.path }}</a></td>
             <td>{{ r.error    ? r.error    : '' }}</td>
             <td>{{ r.contrast ? r.contrast : '' }}</td>
-            <td>{{ r.user }}</td>
+            <td>{{ r.username   }}</td>
             <td>{{ r.department }}</td>
             <td>{{ r.created | date('n/j/Y') }}</td>
         </tr>

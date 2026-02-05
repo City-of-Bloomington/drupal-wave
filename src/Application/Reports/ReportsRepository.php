@@ -14,7 +14,7 @@ class ReportsRepository extends PdoRepository
 
     public function search(array $fields=[], ?string $order='r.path', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = "select r.*,u.username as user,u.department from reports r";
+        $select = "select r.*,u.username, u.department from reports r";
         $joins  = [
             'join drupal.node_field_data  n on r.nid=n.nid',
             'join drupal.node_revision    v on n.nid=v.nid and n.vid=v.vid',

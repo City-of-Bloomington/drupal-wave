@@ -27,7 +27,7 @@ class Controller extends \Web\Controller
     private static function prepareSearch(): array
     {
         $s = [];
-        $fields = ['path', 'department'];
+        $fields = ['path', 'department', 'username'];
         foreach ($fields as $f) {
             if ( !empty( $_GET[$f] )) {
                 $s[$f] = $_GET[$f];
