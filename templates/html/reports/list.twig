@@ -8,6 +8,7 @@
  * @param int    currentPage
  * @param string DRUPAL_SITE
  * @param array  departments   Drop down list of departments
+ * @param array  yesno         Yes/No options for errors
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/pagination.twig" as pagination %}
@@ -22,6 +23,7 @@
             {{ forms.field_text  ('path',       'path',       'Path',       search.path       ?? '' ) }}
             {{ forms.field_text  ('username',   'username',   'Username',   search.username   ?? '' ) }}
             {{ forms.field_select('department', 'department', 'Department', search.department ?? '', departments, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('errors',     'errors',     'Has Errors', search.errors     ?? '', yesno,       false, { onchange:'this.form.submit();' } ) }}
             {{ forms.button('submit', 'Search', 'search') }}
         </fieldset>
     </form>

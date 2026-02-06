@@ -21,7 +21,8 @@ class View extends \Web\View
             'itemsPerPage'=> $itemsPerPage,
             'currentPage' => $currentPage,
             'DRUPAL_SITE' => DRUPAL_SITE,
-            'departments' => self::departments()
+            'departments' => self::departments(),
+            'yesno'       => self::yesno()
         ];
     }
 
@@ -35,5 +36,14 @@ class View extends \Web\View
         $opts = [ ['value'=>''],['value'=>'UNKNOWN'] ];
         foreach (Ldap::$departments as $d=>$ou) { $opts[] = ['value'=>$d]; }
         return $opts;
+    }
+
+    private static function yesno(): array
+    {
+        return [
+            ['value'=>''],
+            ['value'=>1, 'label'=>'Yes'],
+            ['value'=>0, 'label'=>'No' ]
+        ];
     }
 }

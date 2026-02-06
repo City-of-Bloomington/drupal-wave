@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Reports\List;
 
 use Application\Reports\ReportsRepository;
+use Web\Ldap;
 
 class Controller extends \Web\Controller
 {
@@ -27,12 +28,22 @@ class Controller extends \Web\Controller
     private static function prepareSearch(): array
     {
         $s = [];
-        $fields = ['path', 'department', 'username'];
-        foreach ($fields as $f) {
-            if ( !empty( $_GET[$f] )) {
-                $s[$f] = $_GET[$f];
-            }
+
+        if (!empty($_GET['username'])) { $s['username'] =      $_GET['username']; }
+        if (!empty($_GET['path'    ])) { $s['path'    ] =      $_GET['path'    ]; }
+
+        if (        isset($_GET['errors'])
+            && is_numeric($_GET['errors'])) {
+
+            $s['errors'  ] = (int)$_GET['errors'];
         }
+
+        if (     !empty($_GET['department'])
+            && in_array($_GET['department'], array_keys(Ldap::$departments))) {
+
+            $s['department'] = $_GET['department'];
+        }
+
         return $s;
     }
 }
