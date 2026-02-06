@@ -23,14 +23,14 @@
         <fieldset class="usa-fieldset">
             <legend class="usa-legend">Search parameters</legend>
             {{ forms.field_text  ('path',       'path',       'Path',       search.path       ?? '' ) }}
-            {{ forms.field_text  ('username',   'username',   'Username',   search.username   ?? '' ) }}
-            {{ forms.field_select('department', 'department', 'Department', search.department ?? '', departments, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_text  ('username',   'username',   'Last Edited By Username',   search.username   ?? '' ) }}
+            {{ forms.field_select('department', 'department', 'Last Edited By Department', search.department ?? '', departments, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.field_select('errors',     'errors',     'Has Errors', search.errors     ?? '', yesno,       false, { onchange:'this.form.submit();' } ) }}
             {{ forms.button('submit', 'Search', 'search') }}
         </fieldset>
     </form>
 
-    <table>
+    <table class="usa-table">
     <thead>
         <tr><th>Page</th>
             <th>Errors</th>
@@ -56,7 +56,5 @@
     {% if total > itemsPerPage %}
         {{ pagination.pageLinks(REQUEST.uri.path, search, total, itemsPerPage, currentPage) }}
     {% endif %}
-
-    <p>Credits remaining: {{ credits }}</p>
 </section>
 {% endblock %}
