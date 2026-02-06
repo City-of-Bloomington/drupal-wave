@@ -34,7 +34,7 @@ class View extends \Web\View
 
     private static function departments(): array
     {
-        $opts = [ ['value'=>''],['value'=>'UNKNOWN'] ];
+        $opts = [['value'=>'']];
         foreach (Ldap::$departments as $d=>$ou) { $opts[] = ['value'=>$d]; }
         return $opts;
     }

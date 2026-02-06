@@ -13,6 +13,7 @@ class Ldap
     private ?\Ldap\Connection $connection = null;
     private array $config = [];
     public static $departments = [
+        'UNKNOWN'        => '',
         'Clerk'          => 'OU=City Clerk,OU=City Hall,OU=Departments,DC=cob,DC=bloomington,DC=in,DC=gov',
         'CFRD'           => 'OU=Community and Family Resources,OU=City Hall,OU=Departments,DC=cob,DC=bloomington,DC=in,DC=gov',
         'Controller'     => 'OU=Controller,OU=City Hall,OU=Departments,DC=cob,DC=bloomington,DC=in,DC=gov',
