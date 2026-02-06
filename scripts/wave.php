@@ -25,8 +25,7 @@ $sql     = "select n.nid,
             join node_field_data   d on n.nid=d.nid and n.vid=d.vid
             join path_alias        p on p.path=concat('/node/', n.nid)
             left join wave.reports r on r.nid=n.nid
-            where (r.nid is null or from_unixtime(d.changed) > r.created)
-              and n.type!='news'";
+            where (r.nid is null or from_unixtime(d.changed) > r.created)";
 $query   = $drupal->query($sql);
 foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $r) {
     echo "$r[nid] $r[alias]\n";
