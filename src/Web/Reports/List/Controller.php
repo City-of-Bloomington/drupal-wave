@@ -15,13 +15,16 @@ class Controller extends \Web\Controller
     {
         $repo   = new ReportsRepository();
         $page   = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+        $sort   = self::prepareSort();
         $search = self::prepareSearch();
-        $list   = $repo->search(      fields:$search,
-                                itemsPerPage:parent::ITEMS_PER_PAGE,
-                                 currentPage:$page);
+        $list   = $repo->search(fields:$search,
+                                 order:$sort,
+                          itemsPerPage:parent::ITEMS_PER_PAGE,
+                           currentPage:$page);
 
         return new View($list['rows'] ?? [],
                         $search,
+                        $sort,
                         $list['total'] ?? 0,
                         parent::ITEMS_PER_PAGE,
                         $page,
@@ -48,5 +51,18 @@ class Controller extends \Web\Controller
         }
 
         return $s;
+    }
+
+    private static function prepareSort(): ?string
+    {
+        if (!empty($_GET['sort'])) {
+            $s = explode(' ', $_GET['sort']);
+            if (in_array($s[0], ReportsRepository::$sortable_columns)) {
+                return (isset($s[1]) && $s[1]=='desc')
+                        ? "$s[0] desc"
+                        : "$s[0] asc";
+            }
+        }
+        return ReportsRepository::SORT_DEFAULT;
     }
 }

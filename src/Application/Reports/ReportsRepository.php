@@ -10,9 +10,11 @@ use Application\PdoRepository;
 
 class ReportsRepository extends PdoRepository
 {
+    public const SORT_DEFAULT = 'created desc';
     public function __construct() { parent::__construct('reports'); }
+    public static $sortable_columns = ['path', 'created', 'error', 'contrast', 'username', 'department'];
 
-    public function search(array $fields=[], string $order='r.created desc', ?int $itemsPerPage=null, ?int $currentPage=null): array
+    public function search(array $fields=[], string $order=self::SORT_DEFAULT, ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         $select = "select r.*, u.username, u.department
                    from reports r

@@ -6,23 +6,32 @@
 declare (strict_types=1);
 namespace Web\Reports\List;
 
+use Application\Reports\ReportsRepository;
 use Web\Ldap;
 
 class View extends \Web\View
 {
-    public function __construct(array $reports, array $search, int $total, int $itemsPerPage, int $currentPage, int $credits)
+    public function __construct(array  $reports,
+                                array  $search,
+                                string $sort,
+                                int    $total,
+                                int    $itemsPerPage,
+                                int    $currentPage,
+                                int    $credits)
     {
         parent::__construct();
 
         $this->vars = [
             'reports'     => $reports,
             'search'      => $search,
+            'sort'        => $sort,
             'total'       => $total,
             'itemsPerPage'=> $itemsPerPage,
             'currentPage' => $currentPage,
             'DRUPAL_SITE' => DRUPAL_SITE,
             'departments' => self::departments(),
             'yesno'       => self::yesno(),
+            'sorts'       => self::sorts(),
             'credits'     => $credits
         ];
     }
@@ -46,5 +55,24 @@ class View extends \Web\View
             ['value'=>1, 'label'=>'Yes'],
             ['value'=>0, 'label'=>'No' ]
         ];
+    }
+
+    private static function sorts(): array
+    {
+        $o = [['value'=>'']];
+        $cols = [
+            'path'       => 'Page',
+            'error'      => 'Errors',
+            'contrast'   => 'Contrast',
+            'username'   => 'User',
+            'department' => 'Department',
+            'created'    => 'Scanned'
+        ];
+
+        foreach ($cols as $k=>$v) {
+            $o[] = ['value' => "$k asc",  'label'=>"$v Asc" ];
+            $o[] = ['value' => "$k desc", 'label'=>"$v Desc"];
+        }
+        return $o;
     }
 }
