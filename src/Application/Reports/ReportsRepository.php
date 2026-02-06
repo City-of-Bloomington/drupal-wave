@@ -12,15 +12,16 @@ class ReportsRepository extends PdoRepository
 {
     public const SORT_DEFAULT = 'created desc';
     public function __construct() { parent::__construct('reports'); }
-    public static $sortable_columns = ['path', 'created', 'error', 'contrast', 'username', 'department'];
+    public static $sortable_columns = ['r.path', 'created', 'error', 'contrast', 'username', 'department', 'views'];
 
     public function search(array $fields=[], string $order=self::SORT_DEFAULT, ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = "select r.*, u.username, u.department
+        $select = "select r.*, u.username, u.department, a.views
                    from reports r
                    join drupal.node_field_data  n on r.nid=n.nid
                    join drupal.node_revision    v on n.nid=v.nid and n.vid=v.vid
-                   left join users              u on u.id=v.revision_uid";
+                   left join users              u on u.id=v.revision_uid
+                   left join analytics          a on r.path=a.path";
         $joins  = [];
         $where  = [];
         $params = [];

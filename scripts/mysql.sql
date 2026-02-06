@@ -14,3 +14,8 @@ create table users (
     username   varchar(32)  not null unique,
     department varchar(32)
 );
+
+create table analytics (
+    path  varchar(255) not null primary key,
+    views int unsigned not null
+);

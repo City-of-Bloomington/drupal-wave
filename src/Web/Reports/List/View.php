@@ -61,12 +61,13 @@ class View extends \Web\View
     {
         $o = [['value'=>'']];
         $cols = [
-            'path'       => 'Page',
+            'r.path'     => 'Page',
             'error'      => 'Errors',
             'contrast'   => 'Contrast',
             'username'   => 'User',
             'department' => 'Department',
-            'created'    => 'Scanned'
+            'created'    => 'Scanned',
+            'views'      => 'Views'
         ];
 
         foreach ($cols as $k=>$v) {
