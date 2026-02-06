@@ -16,13 +16,16 @@ class Controller extends \Web\Controller
         $repo   = new ReportsRepository();
         $page   = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
         $search = self::prepareSearch();
-        $list   = $repo->search($search, null, parent::ITEMS_PER_PAGE, $page);
+        $list   = $repo->search(      fields:$search,
+                                itemsPerPage:parent::ITEMS_PER_PAGE,
+                                 currentPage:$page);
 
         return new View($list['rows'] ?? [],
                         $search,
                         $list['total'] ?? 0,
                         parent::ITEMS_PER_PAGE,
-                        $page);
+                        $page,
+                        $repo->creditsRemaining());
     }
 
     private static function prepareSearch(): array

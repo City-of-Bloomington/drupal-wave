@@ -10,7 +10,7 @@ use Web\Ldap;
 
 class View extends \Web\View
 {
-    public function __construct(array $reports, array $search, int $total, int $itemsPerPage, int $currentPage)
+    public function __construct(array $reports, array $search, int $total, int $itemsPerPage, int $currentPage, int $credits)
     {
         parent::__construct();
 
@@ -22,7 +22,8 @@ class View extends \Web\View
             'currentPage' => $currentPage,
             'DRUPAL_SITE' => DRUPAL_SITE,
             'departments' => self::departments(),
-            'yesno'       => self::yesno()
+            'yesno'       => self::yesno(),
+            'credits'     => $credits
         ];
     }
 

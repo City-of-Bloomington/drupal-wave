@@ -12,7 +12,7 @@ class ReportsRepository extends PdoRepository
 {
     public function __construct() { parent::__construct('reports'); }
 
-    public function search(array $fields=[], ?string $order='r.path', ?int $itemsPerPage=null, ?int $currentPage=null): array
+    public function search(array $fields=[], string $order='r.created desc', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         $select = "select r.*, u.username, u.department
                    from reports r
@@ -46,5 +46,14 @@ class ReportsRepository extends PdoRepository
 		}
         $sql = self::buildSql($select, $joins, $where, null, $order);
 		return $this->performSelect($sql, $params, $itemsPerPage, $currentPage);
+    }
+
+    public function creditsRemaining(): int
+    {
+        $sql  = 'select report from reports order by created desc limit 1';
+        $q    = $this->pdo->query($sql);
+        $r    = $q->fetchAll(\PDO::FETCH_ASSOC);
+        $json = json_decode($r[0]['report'], true);
+        return (int)$json['statistics']['creditsremaining'];
     }
 }
