@@ -32,6 +32,7 @@
             {{ forms.field_select('sort', 'sort', 'Sort', sort, sorts, false, { onchange:'this.form.submit();' } ) }}
 
             {{ forms.button('submit', 'Search', 'search') }}
+            <a class="usa-button" href="{{ BASE_URL }}">Reset</a>
         </fieldset>
     </form>
 
@@ -61,7 +62,8 @@
     </table>
 
     {% if total > itemsPerPage %}
-        {{ pagination.pageLinks(REQUEST.uri.path, search, total, itemsPerPage, currentPage) }}
+        {% set params = search|merge({'sort':sort}) %}
+        {{ pagination.pageLinks(REQUEST.uri.path, params, total, itemsPerPage, currentPage) }}
     {% endif %}
 </section>
 {% endblock %}
