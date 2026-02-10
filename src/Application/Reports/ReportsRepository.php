@@ -37,9 +37,13 @@ class ReportsRepository extends PdoRepository
                     case 'department':
                         if ($v == 'UNKNOWN') { $where[] = "$k is null"; }
                         else {
-                            $where[]    = "$k like :$k";
+                            $where[]    = "u.$k like :$k";
                             $params[$k] = "$v%";
                         }
+                    break;
+                    case 'path':
+                        $where[] = "r.$k like :$k";
+                        $params[$k] = "$v%";
                     break;
                     default:
                         $where[]    = "$k like :$k";
