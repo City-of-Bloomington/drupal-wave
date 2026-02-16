@@ -71,8 +71,8 @@ class View extends \Web\View
         ];
 
         foreach ($cols as $k=>$v) {
-            $o[] = ['value' => "$k asc",  'label'=>"$v Asc" ];
-            $o[] = ['value' => "$k desc", 'label'=>"$v Desc"];
+            $o[] = ['value' => "$k asc",  'label'=>"$v Ascending" ];
+            $o[] = ['value' => "$k desc", 'label'=>"$v Descending"];
         }
         return $o;
     }
