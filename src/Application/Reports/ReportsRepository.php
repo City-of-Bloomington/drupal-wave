@@ -16,12 +16,19 @@ class ReportsRepository extends PdoRepository
 
     public function search(array $fields=[], string $order=self::SORT_DEFAULT, ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = "select r.*, u.username, u.department, a.views
+        $select = "select r.*,
+                          u.username,
+                          coalesce(dept.name, dv.name, u.department) as department,
+                          a.views
                    from reports r
-                   join drupal.node_field_data  n on r.nid=n.nid
-                   join drupal.node_revision    v on n.nid=v.nid and n.vid=v.vid
-                   left join users              u on u.id=v.revision_uid
-                   left join analytics          a on r.path=a.path";
+                        join drupal.node_field_data         n on    r.nid=n.nid
+                        join drupal.node_revision           v on    n.nid=v.nid and n.vid=v.vid
+                   left join drupal.node__field_department df on    n.nid=df.entity_id
+                   left join drupal.node__field_division   vf on    n.nid=vf.entity_id
+                   left join departments                 dept on dept.nid=df.field_department_target_id
+                   left join departments                   dv on   dv.nid=vf.field_division_target_id
+                   left join users                          u on u.id=v.revision_uid
+                   left join analytics                      a on r.path=a.path";
         $joins  = [];
         $where  = [];
         $params = [];
@@ -64,5 +71,11 @@ class ReportsRepository extends PdoRepository
         $r    = $q->fetchAll(\PDO::FETCH_ASSOC);
         $json = json_decode($r[0]['report'], true);
         return (int)$json['statistics']['creditsremaining'];
+    }
+
+    public function departments(): array
+    {
+        $q = $this->pdo->query('select * from departments');
+        return $q->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

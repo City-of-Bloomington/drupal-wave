@@ -43,8 +43,9 @@ class View extends \Web\View
 
     private static function departments(): array
     {
+        $t    = new ReportsRepository();
         $opts = [['value'=>'']];
-        foreach (Ldap::$departments as $d=>$ou) { $opts[] = ['value'=>$d]; }
+        foreach ($t->departments() as $d) { $opts[] = ['value'=>$d['name']]; }
         return $opts;
     }
 
