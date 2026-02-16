@@ -28,11 +28,12 @@ $sql     = "select n.nid,
             where (r.nid is null or from_unixtime(d.changed) > r.created)";
 $query   = $drupal->query($sql);
 foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $r) {
-    echo "$r[nid] $r[alias]\n";
+    echo "$r[nid] $r[alias] ";
     $webpage = "https://bloomington.in.gov$r[alias]";
     $url     = "https://wave.webaim.org/api/request?key=$api_key&url=$webpage";
     $res     = get($url);
     $json    = json_decode($res, true);
+    echo "Credits remaining: {$json['statistics']['creditsremaining']}\n";
 
     $del->execute([$r['nid']]);
     $ins->execute([
