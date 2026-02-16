@@ -63,6 +63,6 @@ class Controller extends \Web\Controller
                         : "$s[0] asc";
             }
         }
-        return ReportsRepository::SORT_DEFAULT;
+        return 'error desc';
     }
 }

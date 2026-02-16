@@ -59,7 +59,7 @@ class View extends \Web\View
 
     private static function sorts(): array
     {
-        $o = [['value'=>'']];
+        $o    = [];
         $cols = [
             'r.path'     => 'Page',
             'error'      => 'Errors',
