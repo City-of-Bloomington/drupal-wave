@@ -33,15 +33,16 @@ class Controller extends \Web\Controller
 
     private static function prepareSearch(): array
     {
-        $s = [];
+        // defaults
+        $s = ['errors'=>1];
 
         if (!empty($_GET['username'])) { $s['username'] =      $_GET['username']; }
         if (!empty($_GET['path'    ])) { $s['path'    ] =      $_GET['path'    ]; }
 
-        if (        isset($_GET['errors'])
-            && is_numeric($_GET['errors'])) {
-
-            $s['errors'  ] = (int)$_GET['errors'];
+        if (  isset($_GET['errors'])) {
+            $s['errors'] = is_numeric($_GET['errors'])
+                         ? (int)$_GET['errors']
+                         : 'both';
         }
 
         if (     !empty($_GET['department'])

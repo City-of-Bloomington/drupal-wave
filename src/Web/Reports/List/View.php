@@ -51,7 +51,7 @@ class View extends \Web\View
     private static function yesno(): array
     {
         return [
-            ['value'=>''],
+            ['value'=>'both', 'label'=>''],
             ['value'=>1, 'label'=>'Yes'],
             ['value'=>0, 'label'=>'No' ]
         ];
