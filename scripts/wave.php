@@ -20,11 +20,13 @@ $sql     = "select n.nid,
                    from_unixtime(d.changed) as changed,
                    d.uid,
                    p.alias,
-                   r.error, r.created
-            from node              n
-            join node_field_data   d on n.nid=d.nid and n.vid=d.vid
-            join path_alias        p on p.path=concat('/node/', n.nid)
-            left join wave.reports r on r.nid=n.nid
+                   r.error, r.created,
+                   c.field_coordinates_lat
+            from      node                    n
+                 join node_field_data         d on n.nid=d.nid and n.vid=d.vid
+                 join path_alias              p on p.path=concat('/node/', n.nid)
+            left join wave.reports            r on r.nid=n.nid
+            left join node__field_coordinates c on n.nid=c.entity_id
             where (r.nid is null or from_unixtime(d.changed) > r.created)";
 $query   = $drupal->query($sql);
 foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $r) {
@@ -34,6 +36,14 @@ foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $r) {
     $res     = get($url);
     $json    = json_decode($res, true);
     echo "Credits remaining: {$json['statistics']['creditsremaining']}\n";
+
+    // Google Maps always trigger an error in WAVE
+    // Do not count the Google Map error against the page
+    if ($r['field_coordinates_lat'] &&
+        $json['categories']['error']['count'] > 0) {
+
+        $json['categories']['error']['count']--;
+    }
 
     $del->execute([$r['nid']]);
     $ins->execute([
