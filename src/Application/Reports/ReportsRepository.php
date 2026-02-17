@@ -46,7 +46,7 @@ class ReportsRepository extends PdoRepository
                     case 'department':
                         if ($v == 'UNKNOWN') { $where[] = "$k is null"; }
                         else {
-                            $where[]    = "u.$k like :$k";
+                            $where[]    = "coalesce(dept.name, dv.name, u.department) like :$k";
                             $params[$k] = "$v%";
                         }
                     break;
