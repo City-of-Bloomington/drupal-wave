@@ -7,7 +7,6 @@ declare (strict_types=1);
 define('SITE_HOME', $_SERVER['SITE_HOME']);
 include SITE_HOME.'/site_config.php';
 
-
 $api_key = WAVE_API_KEY;
 $drupal  = db_connect($DATABASES['drupal' ]);
 $wave    = db_connect($DATABASES['default']);
