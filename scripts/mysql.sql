@@ -54,3 +54,13 @@ insert into departments(nid, name, title, dn) values
 (25  , 'Police'        , 'Police Department'                    , 'OU=Police,OU=Departments,DC=cob,DC=bloomington,DC=in,DC=gov'),
 (27  , 'Utilities'     , 'Utilities'                            , 'OU=Utilities,OU=Departments,DC=cob,DC=bloomington,DC=in,DC=gov')
 ;
+
+create table site_cache (
+    nid      int unsigned not null primary key,
+    vid      int unsigned not null,
+    path     varchar(255) not null,
+    type     varchar(32)  not null,
+    title    varchar(255),
+    html     text,
+    created  timestamp    not null default CURRENT_TIMESTAMP
+);
