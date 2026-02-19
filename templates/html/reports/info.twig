@@ -10,7 +10,7 @@
     <p>Last scanned: {{ report.created|date('n/j/Y') }}</p>
     <div><a href="{{ DRUPAL_SITE }}{{ report.path }}">{{ DRUPAL_SITE }}{{ report.path }}</a></div>
 
-    <table>
+    <table class="usa-table usa-table--compact">
     <tr><th>Errors</th>  <td>{{ report.error    }}</td>
     <tr><th>Contrast</th><td>{{ report.contrast }}</td>
     <tr><th>Alert</th>   <td>{{ report.alert    }}</td>
@@ -18,7 +18,7 @@
 
     {% if report.grackle %}
     <h2>Grackle PDF Scan Results</h2>
-    <table>
+    <table class="usa-table usa-table--compact">
     <thead>
         <tr><th>Filename</th>
             <th>Score</th>
