@@ -7,7 +7,6 @@
  * @param int    total
  * @param int    itemsPerPage
  * @param int    currentPage
- * @param string DRUPAL_SITE
  * @param int    credits       WAVE credits remaining
  * @param array  departments   Drop down list of departments
  * @param array  yesno         Yes/No options for errors
@@ -53,7 +52,10 @@
         <tr><td><a href="{{ DRUPAL_SITE }}{{ r.path }}">{{ r.path }}</a></td>
             <td>{{ r.error    ? r.error    : '' }}</td>
             <td>{{ r.contrast ? r.contrast : '' }}</td>
-            <td>{{ r.pdf      ? r.pdf      : '' }}</td>
+            <td>{% if r.pdf %}
+                <a href="{{ uri('home.info', { id:r.id }) }}">{{ r.pdf }}</a>
+                {% endif %}
+            </td>
             <td>{{ r.username   }}</td>
             <td>{{ r.department }}</td>
             <td>{{ r.created | date('n/j/Y') }}</td>

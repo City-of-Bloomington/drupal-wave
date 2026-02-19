@@ -1,0 +1,37 @@
+{#
+ * @copyright 2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array report
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header><h1>{{ report.title }}</h1></header>
+    <p>Last scanned: {{ report.created|date('n/j/Y') }}</p>
+    <div><a href="{{ DRUPAL_SITE }}{{ report.path }}">{{ DRUPAL_SITE }}{{ report.path }}</a></div>
+
+    <table>
+    <tr><th>Errors</th>  <td>{{ report.error    }}</td>
+    <tr><th>Contrast</th><td>{{ report.contrast }}</td>
+    <tr><th>Alert</th>   <td>{{ report.alert    }}</td>
+    </table>
+
+    {% if report.grackle %}
+    <h2>Grackle PDF Scan Results</h2>
+    <table>
+    <thead>
+        <tr><th>Filename</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for g in report.grackle %}
+        <tr><td><a href="{{ g.url }}">{{ g.filename }}</a></td>
+            <td>{{ g.score }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    {% endif %}
+</section>
+{% endblock %}

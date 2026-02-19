@@ -50,6 +50,7 @@ abstract class View
         $this->twig->addGlobal('BASE_URL',         BASE_URL);
         $this->twig->addGlobal('BASE_URI',         BASE_URI);
         $this->twig->addGlobal('USWDS_URL',        USWDS_URL);
+        $this->twig->addGlobal('DRUPAL_SITE',      DRUPAL_SITE);
         $this->twig->addGlobal('REQUEST',          $REQUEST);
         $this->twig->addGlobal('ROUTE_NAME',       $ROUTE ? $ROUTE->name : null);
         $this->twig->addGlobal('DATE_FORMAT',      DATE_FORMAT);

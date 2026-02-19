@@ -28,7 +28,6 @@ class View extends \Web\View
             'total'       => $total,
             'itemsPerPage'=> $itemsPerPage,
             'currentPage' => $currentPage,
-            'DRUPAL_SITE' => DRUPAL_SITE,
             'departments' => self::departments(),
             'yesno'       => self::yesno(),
             'sorts'       => self::sorts(),

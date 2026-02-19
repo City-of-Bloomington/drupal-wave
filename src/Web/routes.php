@@ -7,7 +7,10 @@ declare (strict_types=1);
 
 $ROUTES = new \Aura\Router\RouterContainer(BASE_URI);
 $map    = $ROUTES->getMap();
+$map->tokens(['id' => '\d+',
+             'nid' => '\d+']);
 
 $map->attach('home.', '/', function ($r) {
-    $r->get ('index', '', Web\Reports\List\Controller::class);
+    $r->get ('info',  '{id}', Web\Reports\Info\Controller::class);
+    $r->get ('index', '',     Web\Reports\List\Controller::class);
 });
