@@ -7,9 +7,10 @@
 {% block content %}
 <section>
     <header><h1>{{ report.title }}</h1></header>
-    <p>Last scanned: {{ report.created|date('n/j/Y') }}</p>
+    <p>Last WAVE scan: {{ report.created|date('n/j/Y') }}</p>
     <div><a href="{{ DRUPAL_SITE }}{{ report.path }}">{{ DRUPAL_SITE }}{{ report.path }}</a></div>
 
+    <h2>WAVE Webpage Scan Results</h2>
     <table class="usa-table usa-table--compact">
     <tr><th>Errors</th>  <td>{{ report.error    }}</td>
     <tr><th>Contrast</th><td>{{ report.contrast }}</td>
@@ -21,15 +22,58 @@
     <table class="usa-table usa-table--compact">
     <thead>
         <tr><th>Filename</th>
-            <th>Score</th>
+            <th>Grade</th>
+            <th>Scanned</th>
         </tr>
     </thead>
     <tbody>
     {% for g in report.grackle %}
         <tr><td><a href="{{ g.url }}">{{ g.filename }}</a></td>
-            <td>{{ g.score }}</td>
+            <td>{% if     g.score == 100 %} A+
+                {% elseif g.score > 90 %} A
+                {% elseif g.score > 80 %} B
+                {% elseif g.score > 70 %} C
+                {% else %} F
+                {% endif %}
+            </td>
+            <td>{{ g.scanned|date('n/j/Y') }}</td>
         </tr>
     {% endfor %}
+    </tbody>
+    </table>
+
+    <h3>What does the Grackle grade mean?</h3>
+    <table class="usa-table">
+    <thead>
+        <tr><th>Grade</th><th>Meaning</th><th>Explanation</th></tr>
+    </thead>
+    <tbody>
+        <tr><th>A+</th>
+            <td>Pass</td>
+            <td>All accessibility and compliance requirements were met.
+                This file was created or remediated and manually reviewed by GrackleDocs.
+            </td>
+        </tr>
+        <tr><th>A</th>
+            <td>Pass</td>
+            <td>Adheres to compliance requirements but may need manual review or
+                remediation to ensure optimal accessibility and usability
+            </td>
+        </tr>
+        <tr><th>B</th>
+            <td>Needs review</td>
+            <td>Passes most of the requirements, typically reports minimal errors,
+                and may contain several cautions.
+            </td>
+        </tr>
+        <tr><th>C</th>
+            <td>Needs review</td>
+            <td>Passes some of the requirements but typically contains several errors and cautions.</td>
+        </tr>
+        <tr><th>F</th>
+            <td>Fail</td>
+            <td>This document fails many critical requirements and is to be considered entirely inaccessible.</td>
+        </tr>
     </tbody>
     </table>
     {% endif %}

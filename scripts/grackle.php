@@ -6,6 +6,7 @@
 declare (strict_types=1);
 use Application\Database;
 
+$SCAN_DATE = '2026-02-05';
 
 include '../src/Web/bootstrap.php';
 $csv = fopen('./grackle.csv', 'r');
@@ -16,14 +17,15 @@ define('PATH',     3);
 
 $pdo = Database::getConnection();
 $pdo->query('truncate table grackle_results');
-$ins = $pdo->prepare('insert into grackle_results values(?,?,?,?)');
+$ins = $pdo->prepare('insert into grackle_results values(?,?,?,?,?)');
 
 while ($d = fgetcsv($csv)) {
     $data = [
         str_replace('https://bloomington.in.gov', '', urldecode($d[PATH])),
         urldecode($d[FILENAME]),
         urldecode($d[URL]),
-             (int)$d[SCORE]
+             (int)$d[SCORE],
+             $SCAN_DATE
     ];
     echo $data[1]."\n";
     $ins->execute($data);

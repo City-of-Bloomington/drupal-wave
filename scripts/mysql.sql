@@ -33,7 +33,8 @@ create table grackle_results (
     path     varchar(255)     not null,
     filename varchar(255)     not null,
     url      varchar(255)     not null,
-    score    tinyint unsigned not null
+    score    tinyint unsigned not null,
+    scanned  date             not null
 );
 
 insert into departments(nid, name, title, dn) values
