@@ -29,6 +29,13 @@ create table analytics (
     views int unsigned not null
 );
 
+create table grackle_results (
+    path     varchar(255)     not null,
+    filename varchar(255)     not null,
+    url      varchar(255)     not null,
+    score    tinyint unsigned not null
+);
+
 insert into departments(nid, name, title, dn) values
 (16  , 'Clerk'         , 'City Clerk'                           , 'OU=City Clerk,OU=City Hall,OU=Departments,DC=cob,DC=bloomington,DC=in,DC=gov'),
 (18  , 'CFRD'          , 'Community and Family Resources'       , 'OU=Community and Family Resources,OU=City Hall,OU=Departments,DC=cob,DC=bloomington,DC=in,DC=gov'),

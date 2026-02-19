@@ -19,7 +19,7 @@
 {% block content %}
 <section>
     <header><h1>Reports</h1></header>
-    <p>These are the latest results from automated WAVE scans of the city website.</p>
+    <p>These are the latest results from automated scans of the city website.</p>
 
     <form class="usa-form">
         <fieldset class="usa-fieldset">
@@ -41,6 +41,7 @@
         <tr><th>Page</th>
             <th>Errors</th>
             <th>Contrast</th>
+            <th>PDF Problems</th>
             <th>User</th>
             <th>Department</th>
             <th>Scanned</th>
@@ -52,6 +53,7 @@
         <tr><td><a href="{{ DRUPAL_SITE }}{{ r.path }}">{{ r.path }}</a></td>
             <td>{{ r.error    ? r.error    : '' }}</td>
             <td>{{ r.contrast ? r.contrast : '' }}</td>
+            <td>{{ r.pdf      ? r.pdf      : '' }}</td>
             <td>{{ r.username   }}</td>
             <td>{{ r.department }}</td>
             <td>{{ r.created | date('n/j/Y') }}</td>

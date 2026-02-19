@@ -19,7 +19,8 @@ class ReportsRepository extends PdoRepository
         $select = "select r.*,
                           u.username,
                           coalesce(dept.name, dv.name, u.department) as department,
-                          a.views
+                          a.views,
+                          g.pdf
                    from reports r
                         join drupal.node_field_data         n on    r.nid=n.nid
                         join drupal.node_revision           v on    n.nid=v.nid and n.vid=v.vid
@@ -28,7 +29,13 @@ class ReportsRepository extends PdoRepository
                    left join departments                 dept on dept.nid=df.field_department_target_id
                    left join departments                   dv on   dv.nid=vf.field_division_target_id
                    left join users                          u on u.id=v.revision_uid
-                   left join analytics                      a on r.path=a.path";
+                   left join analytics                      a on r.path=a.path
+                   left join (
+                       select path, count(*) as pdf
+                       from grackle_results where score<90
+                       group by path
+                   ) g on r.path=g.path";
+
         $joins  = [];
         $where  = [];
         $params = [];
@@ -39,8 +46,8 @@ class ReportsRepository extends PdoRepository
                     case 'errors':
                         if (is_numeric($v)) {
                             $where[] = $v
-                                     ? '(r.error>0 or  r.contrast>0)'
-                                     : '(r.error<1 and r.contrast<1)';
+                                     ? '(r.error>0 or  r.contrast>0 or g.pdf>0)'
+                                     : '(r.error<1 and r.contrast<1 and (g.pdf is null or g.pdf<1))';
                         }
                     break;
                     case 'department':
