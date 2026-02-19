@@ -25,8 +25,9 @@
             <legend class="usa-legend">Search parameters</legend>
             {{ forms.field_text  ('path',       'path',       'Path',       search.path   ?? '' ) }}
             {{ forms.field_text  ('username',   'username',   'Last Edited By Username',   search.username   ?? '' ) }}
-            {{ forms.field_select('department', 'department', 'Last Edited By Department', search.department ?? '', departments, false, { onchange:'this.form.submit();' } ) }}
-            {{ forms.field_select('errors',     'errors',     'Has Errors', search.errors ?? '', yesno,       false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('department', 'department', 'Department', search.department ?? '', departments, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('errors',     'errors',     'Has Errors', search.errors     ?? '', yesno,       false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('pdf',        'pdf',        'Has PDF Problems', search.pdf  ?? '', yesno,       false, { onchange:'this.form.submit();' } ) }}
 
             {{ forms.field_select('sort', 'sort', 'Sort', sort, sorts, false, { onchange:'this.form.submit();' } ) }}
 

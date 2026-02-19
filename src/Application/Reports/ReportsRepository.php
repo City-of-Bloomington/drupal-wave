@@ -79,6 +79,13 @@ class ReportsRepository extends PdoRepository
                                      : '(r.error<1 and r.contrast<1)';
                         }
                     break;
+                    case 'pdf':
+                        if (is_numeric($v)) {
+                            $where[] = $v
+                                     ? 'g.pdf>0'
+                                     : '(g.pdf is null or g.pdf<1)';
+                        }
+                    break;
                     case 'department':
                         if ($v == 'UNKNOWN') { $where[] = "$k is null"; }
                         else {

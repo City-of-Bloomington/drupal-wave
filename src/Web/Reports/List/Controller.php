@@ -39,10 +39,11 @@ class Controller extends \Web\Controller
         if (!empty($_GET['username'])) { $s['username'] =      $_GET['username']; }
         if (!empty($_GET['path'    ])) { $s['path'    ] =      $_GET['path'    ]; }
 
-        if (  isset($_GET['errors'])) {
-            $s['errors'] = is_numeric($_GET['errors'])
-                         ? (int)$_GET['errors']
-                         : 'both';
+        if (isset($_GET['errors'])) {
+            $s['errors'] = is_numeric($_GET['errors']) ? (int)$_GET['errors'] : 'both';
+        }
+        if (isset($_GET['pdf'])) {
+            $s['pdf'   ] = is_numeric($_GET['pdf'   ]) ? (int)$_GET['pdf'   ] : 'both';
         }
 
         if (     !empty($_GET['department'])
