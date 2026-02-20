@@ -15,8 +15,10 @@ class Controller extends \Web\Controller
     {
         $repo   = new ReportsRepository();
         $page   = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-        $sort   = self::prepareSort();
-        $search = self::prepareSearch();
+
+        $params = self::cleanParameters();
+        $sort   = self::prepareSort($params['sort'] ?? 'views desc');
+        $search = self::prepareSearch($params);
         $list   = $repo->search(fields:$search,
                                  order:$sort,
                           itemsPerPage:parent::ITEMS_PER_PAGE,
@@ -24,7 +26,7 @@ class Controller extends \Web\Controller
 
 
         return new View($list['rows'] ?? [],
-                        $search,
+                        $params,
                         $sort,
                         $list['total'] ?? 0,
                         parent::ITEMS_PER_PAGE,
@@ -32,17 +34,30 @@ class Controller extends \Web\Controller
                         $repo->creditsRemaining());
     }
 
-    private static function prepareSearch(): array
+    private static function cleanParameters(): array
+    {
+        $fields = ['path', 'username', 'department', 'errors', 'sort'];
+        $params = [];
+        $regex  = '/[^a-zA-Z0-9\s\\\-]/';
+        foreach ($fields as $f) {
+            if (!empty($_GET[$f])) {
+                $params[$f] = preg_replace($regex, '', $_GET[$f]);
+            }
+        }
+        return $params;
+    }
+
+    private static function prepareSearch(array $params): array
     {
         // defaults
         $s = [];
-        if (empty($_GET['errors'])) { $_GET['errors'] = 'any'; }
+        if (empty($params['errors'])) { $params['errors'] = 'any'; }
 
-        if (!empty($_GET['username'])) { $s['username'] =      $_GET['username']; }
-        if (!empty($_GET['path'    ])) { $s['path'    ] =      $_GET['path'    ]; }
+        if (!empty($params['username'])) { $s['username'] =      $params['username']; }
+        if (!empty($params['path'    ])) { $s['path'    ] =      $params['path'    ]; }
 
-        if ( isset( $_GET['errors'])) {
-            switch ($_GET['errors']) {
+        if ( isset( $params['errors'])) {
+            switch ($params['errors']) {
                 case 'any':      $s['errors'  ] = true;  break;
                 case 'none':     $s['errors'  ] = false; break;
                 case 'error':    $s['error'   ] = true;  break;
@@ -51,25 +66,23 @@ class Controller extends \Web\Controller
             }
         }
 
-        if (     !empty($_GET['department'])
-            && in_array($_GET['department'], array_keys(Ldap::$departments))) {
+        if (     !empty($params['department'])
+            && in_array($params['department'], array_keys(Ldap::$departments))) {
 
-            $s['department'] = $_GET['department'];
+            $s['department'] = $params['department'];
         }
 
         return $s;
     }
 
-    private static function prepareSort(): ?string
+    private static function prepareSort(string $sort): ?string
     {
-        if (!empty($_GET['sort'])) {
-            $s = explode(' ', $_GET['sort']);
-            if (in_array($s[0], ReportsRepository::$sortable_columns)) {
-                return (isset($s[1]) && $s[1]=='desc')
-                        ? "$s[0] desc"
-                        : "$s[0] asc";
-            }
+        $s = explode(' ', $sort);
+        if (in_array($s[0], ReportsRepository::$sortable_columns)) {
+            return (isset($s[1]) && $s[1]=='desc')
+                    ? "$s[0] desc"
+                    : "$s[0] asc";
         }
-        return 'views desc';
+        return null;
     }
 }

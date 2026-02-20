@@ -12,7 +12,7 @@ use Web\Ldap;
 class View extends \Web\View
 {
     public function __construct(array  $reports,
-                                array  $search,
+                                array  $params,
                                 string $sort,
                                 int    $total,
                                 int    $itemsPerPage,
@@ -23,7 +23,7 @@ class View extends \Web\View
 
         $this->vars = [
             'reports'      => $reports,
-            'search'       => $search,
+            'params'       => $params,
             'sort'         => $sort,
             'total'        => $total,
             'itemsPerPage' => $itemsPerPage,
