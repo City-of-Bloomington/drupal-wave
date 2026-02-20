@@ -36,6 +36,8 @@ class Controller extends \Web\Controller
     {
         // defaults
         $s = [];
+        if (empty($_GET['errors'])) { $_GET['errors'] = 'any'; }
+
 
         if (!empty($_GET['username'])) { $s['username'] =      $_GET['username']; }
         if (!empty($_GET['path'    ])) { $s['path'    ] =      $_GET['path'    ]; }
@@ -69,6 +71,6 @@ class Controller extends \Web\Controller
                         : "$s[0] asc";
             }
         }
-        return 'error desc';
+        return 'views desc';
     }
 }
