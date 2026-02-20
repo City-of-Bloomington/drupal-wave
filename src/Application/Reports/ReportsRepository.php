@@ -12,7 +12,7 @@ class ReportsRepository extends PdoRepository
 {
     public const SORT_DEFAULT = 'created desc';
     public function __construct() { parent::__construct('reports'); }
-    public static $sortable_columns = ['r.path', 'created', 'error', 'contrast', 'username', 'department', 'views'];
+    public static $sortable_columns = ['r.path', 'created', 'error', 'contrast', 'pdf', 'username', 'department', 'views'];
 
     public function loadById(int $id): ?array
     {

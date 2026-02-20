@@ -68,6 +68,7 @@ class View extends \Web\View
             'r.path'     => 'Page',
             'error'      => 'Errors',
             'contrast'   => 'Contrast',
+            'pdf'        => 'PDF Problems',
             'username'   => 'User',
             'department' => 'Department',
             'created'    => 'Scanned',

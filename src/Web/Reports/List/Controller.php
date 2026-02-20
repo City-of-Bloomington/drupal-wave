@@ -38,7 +38,6 @@ class Controller extends \Web\Controller
         $s = [];
         if (empty($_GET['errors'])) { $_GET['errors'] = 'any'; }
 
-
         if (!empty($_GET['username'])) { $s['username'] =      $_GET['username']; }
         if (!empty($_GET['path'    ])) { $s['path'    ] =      $_GET['path'    ]; }
 
