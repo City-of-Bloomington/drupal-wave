@@ -22,16 +22,17 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'reports'     => $reports,
-            'search'      => $search,
-            'sort'        => $sort,
-            'total'       => $total,
-            'itemsPerPage'=> $itemsPerPage,
-            'currentPage' => $currentPage,
-            'departments' => self::departments(),
-            'yesno'       => self::yesno(),
-            'sorts'       => self::sorts(),
-            'credits'     => $credits
+            'reports'      => $reports,
+            'search'       => $search,
+            'sort'         => $sort,
+            'total'        => $total,
+            'itemsPerPage' => $itemsPerPage,
+            'currentPage'  => $currentPage,
+            'errors'       => $_GET['errors'] ?? null,
+            'departments'  => self::departments(),
+            'errorOptions' => self::errorOptions(),
+            'sorts'        => self::sorts(),
+            'credits'      => $credits
         ];
     }
 
@@ -48,12 +49,15 @@ class View extends \Web\View
         return $opts;
     }
 
-    private static function yesno(): array
+    private static function errorOptions(): array
     {
         return [
-            ['value'=>'both', 'label'=>''],
-            ['value'=>1, 'label'=>'Yes'],
-            ['value'=>0, 'label'=>'No' ]
+            ['value'=>'all',      'label'=>'All Pages'          ],
+            ['value'=>'none',     'label'=>'Has no errors'      ],
+            ['value'=>'error',    'label'=>'Has webpage errors' ],
+            ['value'=>'contrast', 'label'=>'Has contrast errors'],
+            ['value'=>'pdf',      'label'=>'Has PDF problems'   ],
+            ['value'=>'any',      'label'=>'Has any errors'     ],
         ];
     }
 

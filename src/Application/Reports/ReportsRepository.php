@@ -73,19 +73,19 @@ class ReportsRepository extends PdoRepository
 			foreach ($fields as $k=>$v) {
                 switch ($k) {
                     case 'errors':
-                        if (is_numeric($v)) {
-                            $where[] = $v
-                                     ? '(r.error>0 or  r.contrast>0)'
-                                     : '(r.error<1 and r.contrast<1)';
-                        }
+                        $where[] = $v ? '(r.error>0 or  r.contrast>0 or   g.pdf>0)'
+                                      : '(r.error<1 and r.contrast<1 and (g.pdf is null or g.pdf<1))';
+                    break;
+                    case 'error':
+                        $where[] = $v ? 'r.error>0' : 'r.error<1';
+                    break;
+                    case 'contrast':
+                        $where[] = $v ? 'r.contrast>0' : 'r.contrast<1';
                     break;
                     case 'pdf':
-                        if (is_numeric($v)) {
-                            $where[] = $v
-                                     ? 'g.pdf>0'
-                                     : '(g.pdf is null or g.pdf<1)';
-                        }
+                        $where[] = $v ? 'g.pdf>0' : '(g.pdf is null or g.pdf<1)';
                     break;
+
                     case 'department':
                         if ($v == 'UNKNOWN') { $where[] = "$k is null"; }
                         else {

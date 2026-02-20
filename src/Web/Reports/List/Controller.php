@@ -22,6 +22,7 @@ class Controller extends \Web\Controller
                           itemsPerPage:parent::ITEMS_PER_PAGE,
                            currentPage:$page);
 
+
         return new View($list['rows'] ?? [],
                         $search,
                         $sort,
@@ -34,16 +35,19 @@ class Controller extends \Web\Controller
     private static function prepareSearch(): array
     {
         // defaults
-        $s = ['errors'=>1];
+        $s = [];
 
         if (!empty($_GET['username'])) { $s['username'] =      $_GET['username']; }
         if (!empty($_GET['path'    ])) { $s['path'    ] =      $_GET['path'    ]; }
 
-        if (isset($_GET['errors'])) {
-            $s['errors'] = is_numeric($_GET['errors']) ? (int)$_GET['errors'] : 'both';
-        }
-        if (isset($_GET['pdf'])) {
-            $s['pdf'   ] = is_numeric($_GET['pdf'   ]) ? (int)$_GET['pdf'   ] : 'both';
+        if ( isset( $_GET['errors'])) {
+            switch ($_GET['errors']) {
+                case 'any':      $s['errors'  ] = true;  break;
+                case 'none':     $s['errors'  ] = false; break;
+                case 'error':    $s['error'   ] = true;  break;
+                case 'contrast': $s['contrast'] = true;  break;
+                case 'pdf':      $s['pdf'     ] = true;  break;
+            }
         }
 
         if (     !empty($_GET['department'])
