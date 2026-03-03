@@ -14,3 +14,7 @@ $map->attach('home.', '/', function ($r) {
     $r->get ('info',  '{id}', Web\Reports\Info\Controller::class);
     $r->get ('index', '',     Web\Reports\List\Controller::class);
 });
+
+$map->attach('content.', '/content', function ($r) {
+    $r->get('search', '', Web\Content\Search\Controller::class);
+});

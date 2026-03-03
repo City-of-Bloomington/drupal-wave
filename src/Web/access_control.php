@@ -28,6 +28,7 @@ foreach ($ROUTES->getMap()->getRoutes() as $r) {
  */
 // Permissions for unauthenticated browsing
 $ACL->allow(null,  'home');
+$ACL->allow(null, 'content');
 
 $ACL->allow('Staff');
 

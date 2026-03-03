@@ -24,6 +24,7 @@
         <tr><th>Filename</th>
             <th>Grade</th>
             <th>Scanned</th>
+            <td></td>
         </tr>
     </thead>
     <tbody>
@@ -39,6 +40,7 @@
                 {% endif %}
             </td>
             <td>{{ g.scanned|date('n/j/Y') }}</td>
+            <td><a href="{{ uri('content.search') ~ '?query=' ~ g.filename }}">Website Pages</a></td>
         </tr>
     {% endfor %}
     </tbody>

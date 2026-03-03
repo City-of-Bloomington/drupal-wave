@@ -1,0 +1,39 @@
+{#
+ * @copyright 2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param string query     Query string
+ * @param array  results   Webpage results
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/pagination.twig" as pagination %}
+{% import  "html/macros/forms.twig"      as forms      %}
+{% block content %}
+<section>
+    <header><h1>Website Content</h1></header>
+
+    <form class="usa-form">
+        <fieldset class="usa-fieldset">
+            <legend class="usa-legend">Search</legend>
+            {{ forms.field_text('query', 'query', 'Query', query ?? '' ) }}
+
+            {{ forms.button('submit', 'Search', 'search') }}
+            <a class="usa-button" href="{{ uri('content.search') }}">Reset</a>
+        </fieldset>
+    </form>
+
+    {% if query %}
+
+        {% if results %}
+        <h2>Webages Found</h2>
+        <table>
+            {% for r in results %}
+            <tr><td><a href="{{ DRUPAL_SITE }}{{ r.alias }}">{{ r.title }}</a></td></tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+    {% else %}
+    <p>No webpages found.</p>
+    {% endif %}
+</section>
+{% endblock %}
