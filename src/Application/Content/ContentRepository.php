@@ -53,4 +53,19 @@ class ContentRepository extends PdoRepository
         $result  = $query->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
+
+    public function grackle_results(string $path): array
+    {
+        $sql = "select g.*,
+                    case when left(g.url, 46)='https://bloomington.in.gov/sites/default/files'
+                        then if(f.fid, '', 'deleted') else ''
+                    end as status
+                from      wave.grackle_results g
+                left join drupal.file_managed  f on f.uri=replace(g.url, 'https://bloomington.in.gov/sites/default/files', 'public:/')
+                where g.path=?";
+        $qq  = $this->pdo->prepare($sql);
+        $qq->execute([$path]);
+        $res = $qq->fetchAll(\PDO::FETCH_ASSOC);
+        return $res;
+    }
 }
