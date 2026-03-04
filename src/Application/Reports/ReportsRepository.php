@@ -19,7 +19,7 @@ class ReportsRepository extends PdoRepository
         $sql = "select r.*,
                        n.title, n.type,
                        u.username,
-                       coalesce(dept.name, dv.name, u.department) as department,
+                       coalesce(dv.name, dept.name, u.department) as department,
                        a.views
                 from reports r
                      join drupal.node_field_data         n on    r.nid=n.nid
@@ -41,7 +41,7 @@ class ReportsRepository extends PdoRepository
     {
         $select = "select r.*,
                           u.username,
-                          coalesce(dept.name, dv.name, u.department) as department,
+                          coalesce(dv.name, dept.name, u.department) as department,
                           a.views,
                           g.pdf
                    from reports r
