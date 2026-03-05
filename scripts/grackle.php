@@ -6,7 +6,7 @@
 declare (strict_types=1);
 use Application\Database;
 
-$SCAN_DATE = '2026-02-05';
+$SCAN_DATE = '2026-03-02';
 
 include '../src/Web/bootstrap.php';
 $csv = fopen('./grackle.csv', 'r');
@@ -30,3 +30,6 @@ while ($d = fgetcsv($csv)) {
     echo $data[1]."\n";
     $ins->execute($data);
 }
+
+$sql = "update grackle_results set url=replace(url, 'www.bloomington.in.gov', 'bloomington.in.gov')";
+$pdo->query($sql);
