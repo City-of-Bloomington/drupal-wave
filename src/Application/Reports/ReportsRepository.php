@@ -116,7 +116,7 @@ class ReportsRepository extends PdoRepository
 
     public function departments(): array
     {
-        $q = $this->pdo->query('select * from departments');
+        $q = $this->pdo->query('select * from departments order by name');
         return $q->fetchAll(\PDO::FETCH_ASSOC);
     }
 }
