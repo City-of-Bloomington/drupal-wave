@@ -11,14 +11,13 @@
 <section>
     <header><h1>Website Content</h1></header>
 
-    <form class="usa-form">
-        <fieldset class="usa-fieldset">
-            <legend class="usa-legend">Search</legend>
-            {{ forms.field_text('query', 'query', 'Query', query ?? '' ) }}
-
-            {{ forms.button('submit', 'Search', 'search') }}
-            <a class="usa-button" href="{{ uri('content.search') }}">Reset</a>
-        </fieldset>
+    <form class="usa-search" role="search">
+        <label class="usa-sr-only" for="query">Search</label>
+        <input class="usa-input"    id="query" name="query" type="search" value="{{ query }}" />
+        <button class="usa-button" type="submit">
+            <span class="usa-search__submit-text">Search </span>
+            <img src="{{ USWDS_URL }}/assets/img/usa-icons-bg/search--white.svg" class="usa-search__submit-icon" alt="Search" />
+        </button>
     </form>
 
     {% if query %}
