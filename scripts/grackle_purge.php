@@ -18,23 +18,32 @@ include '../src/Web/bootstrap.php';
 
 $webscan = Database::getConnection('default');
 $content = new ContentRepository();
-$update  = $webscan->prepare('update grackle_results set unlinked=1 where url=?');
+$update  = $webscan->prepare('update grackle_results set unlinked=1 where path=? and url=?');
+$query   = $webscan->prepare('select url from grackle_results where path=?');
 
 /**
  * Grackle results for files that are not linked in the current revision.
  * These files are still linked in past revisions
  */
-$sql     = "select f.fid, g.path, g.filename, g.url, g.score, g.scanned,
-                   substring(g.url, 47) as internalFilename
-            from      grackle_results     g
-            left join drupal.file_managed f on f.uri=concat('public://', substring(g.url, 48))
-            where f.fid is not null
-              and left(g.url, 46)='https://bloomington.in.gov/sites/default/files'";
-$query   = $webscan->query($sql);
-foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $r) {
-    $pages = $content->pages($r['internalFilename']);
-    if (!count($pages)) {
-        echo "$r[fid],$r[internalFilename]\n";
-        $update->execute([$r['url']]);
+$sql = "select g.url, g.score, g.path, d.nid
+        from   grackle_results      g
+        join drupal.path_alias      p on g.path=p.alias
+        join drupal.node_field_data d on p.path=concat('/node/', d.nid)
+        where g.unlinked=0";
+$q   = $webscan->query($sql);
+foreach ($q->fetchAll(\PDO::FETCH_ASSOC) as $r) {
+    $links = $content->pdf_links((int)$r['nid']);
+
+    $query->execute([$r['path']]);
+    $scores  = $query->fetchAll(\PDO::FETCH_COLUMN);
+    foreach (array_diff($scores, $links) as $url) {
+        echo "\tunlinking $url\n";
+        $s = $update->execute([$r['path'], $url]);
+        if (!$s) {
+            $e = $webscan->errorInfo();
+            print_r($e);
+            print_r($d);
+            exit();
+        }
     }
 }

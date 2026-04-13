@@ -58,8 +58,8 @@ foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $node) {
         json_encode($json)
     ]);
 
-    $links = links((int)$node['nid'], $content);
-    $query = $webscan->prepare('select * from grackle_results where path=? and url=?');
+    $links = $content->pdf_links((int)$node['nid']);
+    $query = $webscan->prepare('select * from grackle_results where path=? and url=? and unlinked=0');
     foreach ($links as $pdf_url) {
         $query->execute([$node['alias'], $pdf_url]);
         $score = $query->fetchAll(\PDO::FETCH_ASSOC);
@@ -71,34 +71,6 @@ foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $node) {
         }
     }
     unlink_obsolete_grackle_results($node['alias'], $links);
-}
-
-
-function links(int $nid, ContentRepository $content): array
-{
-    $batch   = [];
-    $regex   = 'href="([^"]+\\.pdf)"';
-    $res     = $content->page_content($nid, '.pdf');
-    foreach ($res as $r) {
-        switch ($r['field']) {
-            // HTML content
-            case 'node__body':
-            case 'node__field_aside':
-            case 'node__field_details':
-                // Find the URLs for PDF links in the HTML
-                $matches = [];
-                preg_match_all("|$regex|", $r['content'], $matches);
-                if (  isset ($matches[1]) ) {
-                    foreach ($matches[1] as $u) { $batch[] = urldecode($u); }
-                }
-            break;
-
-            // URL fields
-            default:
-                $batch[] = urldecode($r['content']);
-        }
-    }
-    return $batch;
 }
 
 function update_grackle_score(string $webpage_path, string $pdf_url, GrackleGateway $grackle)

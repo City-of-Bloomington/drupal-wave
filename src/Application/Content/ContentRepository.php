@@ -22,7 +22,7 @@ class ContentRepository extends PdoRepository
      */
     public function pages(string $search): array
     {
-        $sql = "select n.nid,
+        $sql = "select distinct n.nid,
                        n.type,
                        n.title,
                        a.alias
@@ -101,6 +101,33 @@ class ContentRepository extends PdoRepository
         $qq->execute([$path]);
         $res = $qq->fetchAll(\PDO::FETCH_ASSOC);
         return $res;
+    }
+
+    public function pdf_links(int $nid): array
+    {
+        $batch   = [];
+        $regex   = 'href="([^"]+\\.pdf)"';
+        $res     = $this->page_content($nid, '.pdf');
+        foreach ($res as $r) {
+            switch ($r['field']) {
+                // HTML content
+                case 'node__body':
+                case 'node__field_aside':
+                case 'node__field_details':
+                    // Find the URLs for PDF links in the HTML
+                    $matches = [];
+                    preg_match_all("|$regex|", $r['content'], $matches);
+                    if (  isset ($matches[1]) ) {
+                        foreach ($matches[1] as $u) { $batch[] = urldecode($u); }
+                    }
+                break;
+
+                // URL fields
+                default:
+                    $batch[] = urldecode($r['content']);
+            }
+        }
+        return $batch;
     }
 
     /**
