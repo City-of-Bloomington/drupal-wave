@@ -59,17 +59,18 @@ foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $node) {
     ]);
 
     $links = links((int)$node['nid'], $content);
-    $query = $webscan->prepare('select * from grackle_results where url=?');
-    foreach ($links as $url) {
-        $query->execute([$url]);
+    $query = $webscan->prepare('select * from grackle_results where path=? and url=?');
+    foreach ($links as $pdf_url) {
+        $query->execute([$node['alias'], $pdf_url]);
         $score = $query->fetchAll(\PDO::FETCH_ASSOC);
         if (!count($score)) {
             // Send to grackle
-            if (substr($url, 0, 46) == 'https://bloomington.in.gov/sites/default/files') {
-                update_grackle_score($url, $grackle);
+            if (substr($pdf_url, 0, 46) == 'https://bloomington.in.gov/sites/default/files') {
+                update_grackle_score($node['alias'], $pdf_url, $grackle);
             }
         }
     }
+    unlink_obsolete_grackle_results($node['alias'], $links);
 }
 
 
@@ -100,29 +101,46 @@ function links(int $nid, ContentRepository $content): array
     return $batch;
 }
 
-function update_grackle_score(string $url, GrackleGateway $grackle)
+function update_grackle_score(string $webpage_path, string $pdf_url, GrackleGateway $grackle)
 {
-    $file = DRUPAL_HOME.'/files'.substr($url, 40);
-    echo "\t$url\n";
+    $file = DRUPAL_HOME.'/files'.substr($pdf_url, 40);
+    echo "\t$pdf_url\n";
     echo "\t$file\n";
     if (is_file($file)) {
         $json = $grackle->scan($file);
         if (isset($json['conformanceIndex'])) {
-            foreach ($pages as $p) {
-                $d = [
-                    'path'     => $p['alias'],
-                    'filename' => basename($internalFilename),
-                    'url'      => DRUPAL_SITE.'/sites/default/files'.$internalFilename,
-                    'score'    => (int)$json['conformanceIndex']
-                ];
-                $s = $insert->execute($d);
-                if (!$s) {
-                    $e = $webscan->errorInfo();
-                    print_r($e);
-                    print_r($d);
-                    exit();
-                }
+            $d = [
+                'path'     => $webpage_path,
+                'filename' => basename($file),
+                'url'      => $pdf_url,
+                'score'    => (int)$json['conformanceIndex']
+            ];
+            $s = $insert->execute($d);
+            if (!$s) {
+                $e = $webscan->errorInfo();
+                print_r($e);
+                print_r($d);
+                exit();
             }
+        }
+    }
+}
+
+function unlink_obsolete_grackle_results(string $webpage_path, array $current_links)
+{
+    $webscan = Database::getConnection('default');
+    $update  = $webscan->prepare('update grackle_results set unlinked=1 where path=? and url=?');
+    $query   = $webscan->prepare('select url from grackle_results where path=?');
+    $query->execute([$webpage_path]);
+    $scores  = $query->fetchAll(\PDO::FETCH_COLUMN);
+    foreach (array_diff($scores, $current_links) as $url) {
+        echo "\tunlinking $url\n";
+        $s = $update->execute([$webpage_path, $url]);
+        if (!$s) {
+            $e = $webscan->errorInfo();
+            print_r($e);
+            print_r($d);
+            exit();
         }
     }
 }
