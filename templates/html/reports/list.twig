@@ -30,7 +30,7 @@
             {{ forms.field_text  ('path',       'path',       'Path',       search.path   ?? '' ) }}
             {{ forms.field_text  ('username',   'username',   'Last Edited By Username',   search.username   ?? '' ) }}
             {{ forms.field_select('department', 'department', 'Department', search.department ?? '', departments, false, { onchange:'this.form.submit();' } ) }}
-            {{ forms.field_select('errors',     'errors',     'Errors',     search.errors ?? '', errorOptions, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('errors',     'errors',     'Errors',     params.errors ?? '', errorOptions, false, { onchange:'this.form.submit();' } ) }}
 
             <input name="sort" type="hidden" value="{{ sort }}" />
             {{ forms.button('submit', 'Search', 'search') }}
