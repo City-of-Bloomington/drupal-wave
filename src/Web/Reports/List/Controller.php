@@ -14,9 +14,9 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): \Web\View
     {
         $repo   = new ReportsRepository();
-        $page   = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+        $page   = !empty($params['page']) ? (int)$params['page'] : 1;
 
-        $params = self::cleanParameters();
+        self::cleanParameters($params);
         $sort   = self::prepareSort($params['sort'] ?? 'views desc');
         $search = self::prepareSearch($params);
         $list   = $repo->search(fields:$search,
@@ -34,17 +34,15 @@ class Controller extends \Web\Controller
                         $repo->creditsRemaining());
     }
 
-    private static function cleanParameters(): array
+    private static function cleanParameters(array &$params)
     {
         $fields = ['path', 'username', 'department', 'errors', 'sort'];
-        $params = [];
         $regex  = '/[^a-zA-Z0-9\.\/\s\\\-]/';
         foreach ($fields as $f) {
-            if (!empty($_GET[$f])) {
-                $params[$f] = preg_replace($regex, '', $_GET[$f]);
+            if (!empty($params[$f])) {
+                $params[$f] = preg_replace($regex, '', $params[$f]);
             }
         }
-        return $params;
     }
 
     private static function prepareSearch(array &$params): array

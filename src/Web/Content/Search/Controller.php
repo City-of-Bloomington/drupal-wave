@@ -13,16 +13,16 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_GET['query'])) {
+        if (!empty($params['query'])) {
             $content = new ContentRepository();
             $reports = new ReportsRepository();
-            $nodes   = $content->pages($_GET['query']);
+            $nodes   = $content->pages($params['query']);
             $results = [];
             foreach ($nodes as $n) {
                 $res     = $reports->find([ 'path'=>$n['alias'] ]);
                 $results = array_merge($results, $res['rows']);
             }
-            return new View($_GET['query'], $results);
+            return new View($params['query'], $results);
         }
 
         return new View();

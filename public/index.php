@@ -19,9 +19,7 @@ $matcher = $ROUTES->getMatcher();
 $ROUTE   = $matcher->match($REQUEST);
 
 if ($ROUTE) {
-    foreach ($ROUTE->attributes as $k=>$v) { $_REQUEST[$k] = $v; }
-
-    $p = pathinfo($ROUTE->name);
+    $p          = pathinfo($ROUTE->name);
     $resource   = $p['filename'];
     $permission = $p['extension'];
     $role       = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
@@ -31,7 +29,7 @@ if ($ROUTE) {
         $controller = $ROUTE->handler;
         $c = new $controller();
         if (is_callable($c)) {
-            $view = $c($ROUTE->attributes);
+            $view = $c(array_merge($_REQUEST, $ROUTE->__get('attributes')));
         }
     }
     else {

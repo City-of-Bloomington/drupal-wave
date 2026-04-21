@@ -30,7 +30,6 @@ class View extends \Web\View
             'total'        => $total,
             'itemsPerPage' => $itemsPerPage,
             'currentPage'  => $currentPage,
-            'errors'       => $_GET['errors'] ?? null,
             'departments'  => self::departments(),
             'errorOptions' => self::errorOptions(),
             'sorts'        => self::sorts(),

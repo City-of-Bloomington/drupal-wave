@@ -14,4 +14,6 @@ abstract class Controller
 	{
         $this->outputFormat = 'html';
 	}
+
+	abstract public function __invoke(array $params): \Web\View;
 }
