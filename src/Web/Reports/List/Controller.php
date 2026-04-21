@@ -47,7 +47,7 @@ class Controller extends \Web\Controller
         return $params;
     }
 
-    private static function prepareSearch(array $params): array
+    private static function prepareSearch(array &$params): array
     {
         // defaults
         $s = [];
