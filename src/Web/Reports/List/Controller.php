@@ -51,17 +51,15 @@ class Controller extends \Web\Controller
         $s = [];
         if (empty($params['errors'])) { $params['errors'] = 'any'; }
 
-        if (!empty($params['username'])) { $s['username'] =      $params['username']; }
-        if (!empty($params['path'    ])) { $s['path'    ] =      $params['path'    ]; }
+        if (!empty($params['username'])) { $s['username'] = $params['username']; }
+        if (!empty($params['path'    ])) { $s['path'    ] = $params['path'    ]; }
 
-        if ( isset( $params['errors'])) {
-            switch ($params['errors']) {
-                case 'any':      $s['errors'  ] = true;  break;
-                case 'none':     $s['errors'  ] = false; break;
-                case 'error':    $s['error'   ] = true;  break;
-                case 'contrast': $s['contrast'] = true;  break;
-                case 'pdf':      $s['pdf'     ] = true;  break;
-            }
+        switch ($params['errors']) {
+            case 'any':      $s['errors'  ] = true;  break;
+            case 'none':     $s['errors'  ] = false; break;
+            case 'error':    $s['error'   ] = true;  break;
+            case 'contrast': $s['contrast'] = true;  break;
+            case 'pdf':      $s['pdf'     ] = true;  break;
         }
 
         if (     !empty($params['department'])

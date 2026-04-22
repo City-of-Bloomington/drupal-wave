@@ -66,7 +66,7 @@ $GRACKLE = [
 ];
 
 define('SMTP_HOST', "smtp.example.org");
-define('SMTP_PORT', "25");
+define('SMTP_PORT', 25);
 
 define('DATE_FORMAT', 'n/j/Y');
 define('TIME_FORMAT', 'g:i a');

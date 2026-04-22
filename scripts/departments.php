@@ -2,6 +2,7 @@
 /**
  * @copyright 2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @var array $LDAP
  */
 declare (strict_types=1);
 use Application\Database;

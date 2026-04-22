@@ -116,8 +116,8 @@ class ContentRepository extends PdoRepository
                 case 'node__field_details':
                     // Find the URLs for PDF links in the HTML
                     $matches = [];
-                    preg_match_all("|$regex|", $r['content'], $matches);
-                    if (  isset ($matches[1]) ) {
+                    $s = preg_match_all("|$regex|", $r['content'], $matches);
+                    if ($s) {
                         foreach ($matches[1] as $u) { $batch[] = urldecode($u); }
                     }
                 break;

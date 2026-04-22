@@ -37,7 +37,7 @@ while ($d = fgetcsv($csv)) {
         'score'    =>      (int)$d[SCORE],
         'scanned'  =>      $SCAN_DATE
     ];
-    echo $data[1]."\n";
+    echo "$data[path]\n";
     $ins->execute($data);
 }
 
