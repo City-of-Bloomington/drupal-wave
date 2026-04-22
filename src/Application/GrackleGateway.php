@@ -41,6 +41,7 @@ class GrackleGateway
     public function scan(string $file): array
     {
         $res = $this->client->post($this->server.'/scans/sync', [
+            'http_errors' => false,
             'headers'   => $this->headers(),
             'multipart' => [
                 ['name'=>'autoDelete', 'contents'=>'true'],
@@ -48,7 +49,13 @@ class GrackleGateway
                 ['name'=>'file', 'contents'=>Utils::tryFopen($file, 'r')]
             ]
         ]);
-        $json = (string)$res->getBody();
+        if ($res->getStatusCode() == 200) {
+            $json = (string)$res->getBody();
+        }
+        else {
+            $html = (string)$res->getBody();
+            throw new \Exception($html);
+        }
         return json_decode($json, true);
     }
 
