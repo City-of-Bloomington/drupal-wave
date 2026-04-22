@@ -2,6 +2,7 @@
 /**
  * @copyright 2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @var array $GRACKLE
  */
 declare (strict_types=1);
 use Application\Content\ContentRepository;
@@ -20,7 +21,7 @@ $insert  = $webscan->prepare($sql);
 
 $query   = $webscan->prepare('select * from grackle_results where path=? and url=?');
 
-$q = $webscan->query("select * from drupal.file_managed where filemime='application/pdf'");
+$q = $webscan->query("select * from drupal.file_managed where filemime='application/pdf' order by changed desc");
 foreach ($q->fetchAll(\PDO::FETCH_ASSOC) as $f) {
     $internalFilename = substr($f['uri'], 8);
     $pages = $content->pages($internalFilename);

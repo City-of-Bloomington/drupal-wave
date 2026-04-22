@@ -42,7 +42,6 @@ foreach ($q->fetchAll(\PDO::FETCH_ASSOC) as $r) {
         if (!$s) {
             $e = $webscan->errorInfo();
             print_r($e);
-            print_r($d);
             exit();
         }
     }

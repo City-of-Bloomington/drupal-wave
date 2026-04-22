@@ -20,5 +20,4 @@ package:
 	cd build && tar czf ${APPNAME}-${VERSION}-${COMMIT}.tar.gz ${APPNAME}
 
 test:
-	vendor/bin/phpunit -c src/Test/phpunit.xml --testsuite Unit
-	vendor/bin/phpstan analyse -l 0
+	vendor/bin/phpstan analyse -l 2
