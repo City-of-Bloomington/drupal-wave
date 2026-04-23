@@ -111,7 +111,7 @@ abstract class View
     public static function isAllowed(string $resource, ?string $action=null): bool
     {
         global $ACL;
-        $role = 'Anonymous';
+        $role = 'anonymous';
         if (isset  ($_SESSION['USER']) && $_SESSION['USER']['role']) {
             $role = $_SESSION['USER']['role'];
         }

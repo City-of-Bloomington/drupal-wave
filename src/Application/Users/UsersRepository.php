@@ -10,7 +10,16 @@ use Application\PdoRepository;
 
 final class UsersRepository extends PdoRepository
 {
-    public const COLUMNS = ['id', 'username', 'role', 'department_id'];
+    public const COLUMNS = ['id', 'username', 'role', 'department_id', 'department'];
+    private const BASE_SELECT = <<<END
+    select u.id, u.username, u.department_id,
+           d.name as department,
+           r.roles_target_id as role
+    from users u
+    left join departments d on d.id=u.department_id
+    left join drupal.users_field_data du on u.username=du.name
+    left join drupal.user__roles r on du.uid=r.entity_id
+    END;
 
     public function __construct() { parent::__construct('users'); }
 
@@ -19,7 +28,7 @@ final class UsersRepository extends PdoRepository
      */
     public function loadByUsername(string $username): ?array
     {
-        $q = $this->pdo->prepare('select * from users where username=?');
+        $q = $this->pdo->prepare(self::BASE_SELECT.' where username=?');
         $q->execute([$username]);
         $r = $q->fetchAll(\PDO::FETCH_ASSOC);
         if (count($r)) { return $r[0]; }

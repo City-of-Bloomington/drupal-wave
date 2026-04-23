@@ -9,9 +9,15 @@ use Laminas\Permissions\Acl\Role\GenericRole as Role;
 use Laminas\Permissions\Acl\Resource\GenericResource as Resource;
 
 $ACL = new Acl();
-$ACL->addRole(new Role('Anonymous'))
-    ->addRole(new Role('Staff'))
-    ->addRole(new Role('Administrator'));
+$ACL->addRole(new Role('anonymous'))
+    ->addRole(new Role('authenticated'))
+    ->addRole(new Role('jobs_editor'))
+    ->addRole(new Role('project_editor'))
+    ->addRole(new Role('utilities_project_editor'))
+    ->addRole(new Role('news'))
+    ->addRole(new Role('web_admins'))
+    ->addRole(new Role('webmaster'))
+    ->addRole(new Role('administrator'));
 
 /**
  * Create resources for all the routes
@@ -31,7 +37,5 @@ foreach ($ROUTES->getMap()->getRoutes() as $r) {
 $ACL->allow(null,  'home');
 $ACL->allow(null, 'content');
 
-$ACL->allow('Staff');
-
 // Administrator is allowed access to everything
-$ACL->allow('Administrator');
+$ACL->allow('administrator');

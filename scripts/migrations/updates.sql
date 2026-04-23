@@ -7,3 +7,4 @@ set u.department_id=d.id;
 
 alter table users drop foreign key users_ibfk_1;
 alter table users drop department;
+alter table users drop role;
