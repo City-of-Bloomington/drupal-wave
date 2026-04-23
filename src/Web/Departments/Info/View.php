@@ -8,12 +8,13 @@ namespace Web\Departments\Info;
 
 class View extends \Web\View
 {
-    public function __construct(array $department)
+    public function __construct(array $department, array $users)
     {
         parent::__construct();
 
         $this->vars = [
-            'department' => $department
+            'department' => $department,
+            'users'      => $users
         ];
     }
 

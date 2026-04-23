@@ -16,21 +16,22 @@ class ReportsRepository extends PdoRepository
 
     private const BASE_SELECT = <<<END
     select r.*,
-           n.title, n.type,
-           u.username,
-           coalesce(dv.name, dept.name, dn.name, u.department) as department,
-           a.views,
-           g.pdf
+        n.title, n.type,
+        u.username,
+        coalesce(dv.name, dept.name, dn.name, ud.name) as department,
+        a.views,
+        g.pdf
     from reports r
-         join drupal.node_field_data            n on    r.nid=n.nid
-         join drupal.node_revision              v on    n.nid=v.nid and n.vid=v.vid
+        join drupal.node_field_data            n on    r.nid=n.nid
+        join drupal.node_revision              v on    n.nid=v.nid and n.vid=v.vid
     left join drupal.node__field_department    df on    n.nid=df.entity_id
     left join drupal.node__field_division      vf on    n.nid=vf.entity_id
     left join drupal.node__field_directory_dn dnf on n.nid=dnf.entity_id
+    left join users                             u on u.id=v.revision_uid
     left join departments                    dept on dept.nid=df.field_department_target_id
     left join departments                      dv on   dv.nid=vf.field_division_target_id
     left join departments                      dn on   dn.dn=dnf.field_directory_dn_value
-    left join users                             u on u.id=v.revision_uid
+    left join departments                      ud on u.department_id=ud.id
     left join analytics                         a on r.path=a.path
     left join (
         select path, count(*) as pdf
@@ -75,7 +76,7 @@ class ReportsRepository extends PdoRepository
                     case 'department':
                         if ($v == 'UNKNOWN') { $where[] = "$k is null"; }
                         else {
-                            $where[]    = "coalesce(dv.name, dept.name, dn.name, u.department) like :$k";
+                            $where[]    = "coalesce(dv.name, dept.name, dn.name, ud.name) like :$k";
                             $params[$k] = "$v%";
                         }
                     break;
@@ -119,7 +120,7 @@ class ReportsRepository extends PdoRepository
                     case 'department':
                         if ($v == 'UNKNOWN') { $where[] = "$k is null"; }
                         else {
-                            $where[]    = "coalesce(dv.name, dept.name, dn.name, u.department) like :$k";
+                            $where[]    = "coalesce(dv.name, dept.name, dn.name, ud.name) like :$k";
                             $params[$k] = "$v%";
                         }
                     break;

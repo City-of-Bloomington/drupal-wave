@@ -8,8 +8,10 @@ namespace Application\Users;
 
 use Application\PdoRepository;
 
-class UsersRepository extends PdoRepository
+final class UsersRepository extends PdoRepository
 {
+    public const COLUMNS = ['id', 'username', 'role', 'department_id'];
+
     public function __construct() { parent::__construct('users'); }
 
     /**

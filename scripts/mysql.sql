@@ -18,11 +18,11 @@ create table departments (
 );
 
 create table users (
-    id         int unsigned not null primary key,
-    username   varchar(32)  not null unique,
-    department varchar(32),
-    role       varchar(16),
-    foreign key (department) references departments(name)
+    id            int unsigned not null primary key,
+    username      varchar(32)  not null unique,
+    role          varchar(16),
+    department_id int unsigned,
+    foreign key (department_id) references departments(id)
 );
 
 create table analytics (

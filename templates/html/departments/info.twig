@@ -2,6 +2,7 @@
  * @copyright 2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array department
+ * @param array users
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
@@ -16,4 +17,15 @@
     </tr>
     </table>
 </section>
+
+{% if users %}
+<section>
+    <header><h2>Users</h2></header>
+    <table>
+        {% for u in users %}
+        <tr><td>{{ u.username }}</td></tr>
+        {% endfor %}
+    </table>
+</section>
+{% endif %}
 {% endblock %}

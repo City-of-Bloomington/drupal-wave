@@ -7,14 +7,19 @@ declare (strict_types=1);
 namespace Web\Departments\Info;
 
 use Application\Departments\DepartmentsRepository;
+use Application\Users\UsersRepository;
 
 class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        $repo = new DepartmentsRepository();
-        $dept = $repo->loadById((int)$params['id']);
+        $dept_id = (int)$params['id'];
 
-        return new View($dept);
+        $repo    = new DepartmentsRepository();
+        $ur      = new UsersRepository();
+        $dept    = $repo->loadById($dept_id);
+        $users   = $ur->find(['department_id'=>$dept_id]);
+
+        return new View($dept, $users['rows']);
     }
 }
