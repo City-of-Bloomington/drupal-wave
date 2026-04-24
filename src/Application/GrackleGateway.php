@@ -49,12 +49,12 @@ class GrackleGateway
                 ['name'=>'file', 'contents'=>Utils::tryFopen($file, 'r')]
             ]
         ]);
-        if ($res->getStatusCode() == 200) {
+        $status = $res->getStatusCode();
+        if ($status == 200 || $status == 202) {
             $json = (string)$res->getBody();
         }
         else {
-            $html = (string)$res->getBody();
-            throw new \Exception($html);
+            throw new \Exception("Request failed with status ".$res->getStatusCode());
         }
         return json_decode($json, true);
     }

@@ -50,12 +50,10 @@ foreach ($q->fetchAll(\PDO::FETCH_ASSOC) as $f) {
                     'url'      => $url,
                     'score'    => $score
                 ];
-                print_r($d);
                 $s = $insert->execute($d);
                 if (!$s) {
                     $e = $webscan->errorInfo();
                     print_r($e);
-                    print_r($d);
                     exit();
                 }
             }
