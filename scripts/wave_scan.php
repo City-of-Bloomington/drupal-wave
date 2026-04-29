@@ -112,7 +112,7 @@ function update_grackle_score(string $webpage_path, string $pdf_url, GrackleGate
     $insert  = $webscan->prepare($sql);
     $delete  = $webscan->prepare('delete from grackle_results where path=? and url=?');
 
-    $file = DRUPAL_HOME.'/files'.substr($pdf_url, 40);
+    $file = DRUPAL_HOME.substr($pdf_url, 40);
     echo "\t$pdf_url\n";
     echo "\t$file\n";
     if (is_file($file)) {
@@ -124,7 +124,7 @@ function update_grackle_score(string $webpage_path, string $pdf_url, GrackleGate
                 'url'      => $pdf_url,
                 'score'    => (int)$json['conformanceIndex']
             ];
-            $delete->execute([]);
+            $delete->execute([$webpage_path, $pdf_url]);
             $s = $insert->execute($d);
             if (!$s) {
                 $e = $webscan->errorInfo();
