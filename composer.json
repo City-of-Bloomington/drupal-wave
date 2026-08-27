@@ -2,10 +2,10 @@
     "require": {
         "php": ">=8.3",
         "aura/router":                      "@stable",
+        "facile-it/php-openid-client":      "@stable",
         "graylog2/gelf-php":                "@stable",
         "guzzlehttp/guzzle":                "@stable",
         "guzzlehttp/psr7":                  "@stable",
-        "jumbojett/openid-connect-php":     "@stable",
         "laminas/laminas-permissions-acl":  "@stable",
         "phpmailer/phpmailer":              "@stable",
         "twig/twig":                        "@stable"
@@ -19,6 +19,11 @@
             "Application\\": "src/Application",
             "Test\\":        "src/Test",
             "Web\\":         "src/Web"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
         }
     }
 }

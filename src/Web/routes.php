@@ -11,7 +11,7 @@ $map->tokens(['id' => '\d+',
              'nid' => '\d+']);
 
 $map->attach('home.', '/', function ($r) {
-    $r->get('login',  'login',  Web\Auth\Login\Controller::class);
+    $r->get('login',  'login',  Web\Auth\Login\Controller::class)->allows(['POST']);
     $r->get('logout', 'logout', Web\Auth\Logout\Controller::class);
     $r->get('info',   '{id}',   Web\Reports\Info\Controller::class);
     $r->get('index',  '',       Web\Reports\List\Controller::class);
