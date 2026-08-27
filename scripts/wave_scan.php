@@ -14,7 +14,9 @@ use Application\WaveGateway;
 use PHPMailer\PHPMailer\PHPMailer;
 use Web\Reports\Info\Controller as InfoController;
 
-if ($argc != 2 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
+global $argc, $argv;
+
+if ($argc != 2 || in_array($argv[1], ['--help', '-help', '-h', '-?'])) {
 echo "
 Usage: php $argv[0] SITE_HOME
 

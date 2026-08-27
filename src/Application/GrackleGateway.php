@@ -40,13 +40,16 @@ class GrackleGateway
 
     public function scan(string $file): array
     {
+        $stream = fopen($file, 'r');
+        if (!$stream) { throw new \Exception("Unable to open file $file"); }
+
         $res = $this->client->post($this->server.'/scans/sync', [
             'http_errors' => false,
             'headers'   => $this->headers(),
             'multipart' => [
                 ['name'=>'autoDelete', 'contents'=>'true'],
                 ['name'=>'type', 'contents'=>'pdfua1'],
-                ['name'=>'file', 'contents'=>Utils::tryFopen($file, 'r')]
+                ['name'=>'file', 'contents'=>$stream]
             ]
         ]);
         $status = $res->getStatusCode();
